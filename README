@@ -1,0 +1,20 @@
+meta-xaptum
+===========
+
+OpenEmbedded layer for Xaptum ENF hardware.
+
+Dependencies
+------------
+
+This layer depends on:
+
+URI: git://github.com/openembedded/openembedded-core.git
+branch: daisy
+revision: HEAD
+
+For some recipes, the meta-oe layer is required
+
+URI: git://github.com/openembedded/meta-openembedded.git
+subdirectory: meta-oe
+branch: daisy
+revision: HEAD

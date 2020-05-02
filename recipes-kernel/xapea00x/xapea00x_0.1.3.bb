@@ -7,6 +7,9 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://xapea00x.h;beginline=1;endline=19;md5=2c1a72d4050851a905cb06cb84109f4e"
 PR = "r0"
 
+DEPENDS = "virtual/kernel"
+RDEPENDS_kernel-module-${PN} = "kernel-module-tpm-tis-spi kernel-module-tpm-rng"
+
 inherit module
 
 SRC_URI = "https://github.com/xaptum/xapea00x/archive/v${PV}.tar.gz"
@@ -15,15 +18,12 @@ SRC_URI[sha256sum] = "6c67de24641b3fbef0c7645f1f63b5b7bd052af82ebb2ceea1f8a338b4
 
 S = "${WORKDIR}/${PN}-${PV}"
 
-DEPENDS = "virtual/kernel"
-
-# # This module requires Linux 4.9 or higher.
+# This module requires Linux 4.9 or higher.
 EXTRA_OEMAKE_append = " \
                        KDIR=${STAGING_KERNEL_DIR} \
                       "
 
 MODULE_NAME = "xapea00x"
-
 PACKAGES = "kernel-module-${PN}"
 FILES_kernel-module-${PN} = "${base_libdir}/modules/${KERNEL_VERSION}/extra/${MODULE_NAME}.ko"
 

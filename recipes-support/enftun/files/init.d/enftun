@@ -1,0 +1,89 @@
+#!/bin/sh -e
+
+SETUP=/usr/bin/enftun-setup
+DAEMON=/usr/bin/enftun
+CONFIG_DIR=/etc/enftun
+LOG_DIR=/var/log
+PID_DIR=/var/run
+test -x $SETUP || exit 0
+test -x $DAEMON || exit 0
+test -d $CONFIG_DIR || exit 0
+
+start_enftun () {
+    modprobe tun >/dev/null 2>&1 || true
+
+    cd $CONFIG_DIR
+
+    $SETUP up $NAME.conf || echo -n " FAILED->"
+    echo 0 > /proc/sys/net/ipv6/conf/$NAME/disable_ipv6
+
+    nohup $DAEMON -c $NAME.conf >>$LOG_DIR/enftun.$NAME.log 2>&1 &
+    echo $! > $PID_DIR/enftun.$NAME.pid
+    read PID < $PID_DIR/enftun.$NAME.pid
+
+    echo -n "$NAME is running as $PID"
+}
+stop_enftun () {
+   cd  $CONFIG_DIR
+
+   kill `cat $PIDFILE` || true
+   rm $PIDFILE
+
+   $SETUP down $NAME.conf || echo -m " FAILED->"
+}
+
+case "$1" in
+start)
+  echo -n "Starting enftun:"
+
+  if test -z $2 ; then
+    for CONFIG in `cd $CONFIG_DIR; ls *.conf 2> /dev/null`; do
+      NAME=${CONFIG%%.conf}
+      start_enftun
+    done
+  else
+    if test -e $CONFIG_DIR/$2.conf ; then
+      NAME=$2
+      start_enftun
+    else
+      echo -n " No enftun config for : $2"
+    fi
+  fi
+  echo "."
+
+  ;;
+stop)
+  echo -n "Stopping enftun:"
+
+  if test -z $2 ; then
+    for PIDFILE in `ls /var/run/enftun.*.pid 2> /dev/null`; do
+      NAME=`echo $PIDFILE | cut -c17-`
+      NAME=${NAME%%.pid}
+      stop_enftun
+      echo -n " $NAME"
+    done
+  else
+    if test -e /var/run/enftun.$2.pid ; then
+      PIDFILE=`ls /var/run/enftun.$2.pid 2> /dev/null`
+      NAME=`echo $PIDFILE | cut -c17-`
+      NAME=${NAME%%.pid}
+      stop_enftun
+      echo -n " $NAME"
+    else
+      echo -n " No enftun config for : $2"
+    fi
+  fi
+  echo "."
+  ;;
+restart)
+  $0 stop $2
+  sleep 1
+  $0 start $2
+  ;;
+*)
+  echo "Usage: $0 {start|stop|restart}" >&2
+  exit 1
+  ;;
+esac
+
+exit 0

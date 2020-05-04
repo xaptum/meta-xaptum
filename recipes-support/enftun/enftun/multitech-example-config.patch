@@ -1,0 +1,172 @@
+From c79c67e03962909076c5a1ff981e8dd3fb3f2569 Mon Sep 17 00:00:00 2001
+From: "David R. Bild" <david.bild@xaptum.com>
+Date: Mon, 4 May 2020 16:59:12 -0500
+Subject: [PATCH] WIP: multitech example config
+
+---
+ example/CMakeLists.txt                |  3 +-
+ example/device.conf                   | 93 ---------------------------
+ example/{server.conf => example.conf} | 16 +++--
+ 3 files changed, 10 insertions(+), 102 deletions(-)
+ delete mode 100644 example/device.conf
+ rename example/{server.conf => example.conf} (86%)
+
+diff --git a/example/CMakeLists.txt b/example/CMakeLists.txt
+index 7d65d04..18dc94c 100644
+--- a/example/CMakeLists.txt
++++ b/example/CMakeLists.txt
+@@ -4,8 +4,7 @@ set(INSTALL_EXAMPLEDIR "${CMAKE_INSTALL_DOCDIR}/example")
+ 
+ install(
+   FILES
+-  device.conf
+-  server.conf
++  example.conf
+   DESTINATION
+   ${INSTALL_EXAMPLEDIR}
+ )
+diff --git a/example/device.conf b/example/device.conf
+deleted file mode 100644
+index 3f0ed70..0000000
+--- a/example/device.conf
++++ /dev/null
+@@ -1,93 +0,0 @@
+-# Example configuration for a Xaptum ENF device client.
+-#
+-# All traffic for a device should be routed through the ENF to realize
+-# the full security benefits. This approach isolates the device from
+-# threats on the public Internet, even if it has open ports or default
+-# passwords.
+-#
+-# This example configures the host to route all IPv6 traffic over the
+-# ENF and drop all IPv4 traffic, with three execeptions.
+-#
+-# 1) DHCP(v6) and ICMP(v6) are allowed on local physical interfaces to
+-#    obtain last-mile IP connectivity.
+-#
+-# 2) Any interface listed in :route.trusted_interfaces: is exempt from
+-#    these rules.  Only interfaces attached to local, trusted (i.e.,
+-#    without internet access) networks should be listed here.
+-#
+-# 3) The encrypted ENF tunnel packets themselves must transit a
+-#    physical interface to reach the ENF. These packets are encrypted
+-#    and authenticated to protect from attacks on the Internet.
+-
+-version = "1.0"
+-
+-# TUN device settings
+-tun : {
+-  # The name of the TUN device to use.
+-  # dev = "enf0"
+-
+-  # The device node used to open the TUN device. On Linux,
+-  # '/dev/net/tun' is the default.
+-  # dev_node = "/dev/net/tun"
+-
+-  # The full path to the iproute2 tool used to set the address on the
+-  # tun interface.
+-  # ip_path = "/bin/ip"
+-}
+-
+-# Remote server settings
+-remote : {
+-  # List of hostnames, IPv4, or IPv6 addresses of the remote server.
+-  # hosts = [ "23.147.128.112", "2607:8f80:ffff::1" ]
+-
+-  # The listening port on the remote server.
+-  # port = "443"
+-
+-  # The path to the root CA certificate used to verify the remote
+-  # server during TLS handshake.
+-  # ca_cert_file = "/etc/enftun/enf.cacert.pem"
+-}
+-
+-# Route settings
+-route : {
+-  # The mark to apply to packets tunneling traffic to the ENF. Packets
+-  # with this mark should be routed through the physical network
+-  # connection, not the tun device.
+-  # fwmark = 363
+-
+-  # The routing table that will be used for all traffic that should be
+-  # sent through the tun.
+-  #
+-  # This option is only used by the enftun-setup script.
+-  # table = 2097
+-
+-  # List of prefixes that should be routed through the tunnel.
+-  # prefixes = [ default ]
+-
+-  # List of interfaces on local, trusted networks that should be
+-  # exempt from the routing and firewall policies. Traffic destined
+-  # for these interfaces will be allowed to bypass the tunnel.
+-  #
+-  # This option is only used by the enftun-setup script.
+-  # trusted_interfaces = [ ]
+-}
+-
+-# Identity settings
+-identity : {
+-  # The path to the client certificate used to authenticate to the
+-  # remote server during TLS handshake.
+-  cert_file = "enf0/enf0.crt.pem"
+-
+-  # The path to the private key used to authenticate to the remote
+-  # server during TLS handshake.
+-  key_file  = "enf0/enf0.key.pem"
+-
+-  # XTT settings
+-  #
+-  # If the XTT section is removed, XTT will not be used to provision
+-  # an identity.
+-  xtt : {
+-    # Path to the TPM with the provisioning credentials.
+-    # device = "/dev/tpm0"
+-  }
+-}
+diff --git a/example/server.conf b/example/example.conf
+similarity index 86%
+rename from example/server.conf
+rename to example/example.conf
+index 6f3dbc1..0b91864 100644
+--- a/example/server.conf
++++ b/example/example.conf
+@@ -1,13 +1,11 @@
+-# Example configuration for the Xaptum ENF server client.
+-#
+-# A backend server may need to communicate directly with the public
+-# Internet, so only the ENF network traffic itself must be routed via
+-# the tunnel.  It is presumed that the server admins can manage its
+-# security policy appropriately.
++# Example configuration for the Xaptum ENF client.
+ #
+ # This example configures the host to route any ENF IPv6 traffic over
+ # the tunnel. Routes for all other IPv4 and IPv6 addresses are
+ # unchanged.
++#
++# If you want all traffic to be tunneled over the ENF, set the list of
++# "prefixes" below to include "default".
+ 
+ version = "1.0"
+ 
+@@ -22,7 +20,7 @@ tun : {
+ 
+   # The full path to the iproute2 tool used to set the address on the
+   # tun interface.
+-  # ip_path = "/bin/ip"
++  ip_path = "/sbin/ip"
+ }
+ 
+ # Remote server settings
+@@ -75,4 +73,8 @@ identity : {
+   #
+   # If the XTT section is removed, XTT will not be used to provision
+   # an identity.
++  xtt : {
++    # Path to the TPM with the provisioning credentials.
++    # device = "/dev/tpm0"
++  }
+ }
+-- 
+2.26.0
+

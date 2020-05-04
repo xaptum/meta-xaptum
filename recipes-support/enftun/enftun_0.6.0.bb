@@ -9,6 +9,17 @@ SRC_URI = "https://github.com/xaptum/${PN}/archive/v${PV}.tar.gz"
 SRC_URI[md5sum] = "67cff2550840e3c33aef4cf0f9ff649f"
 SRC_URI[sha256sum] = "4a957e6f2684247e58cfff44542c130b626a6b33cb1839a9ec5045859d2d4543"
 
+FILESEXTRAPATHS_prepend += "${THISDIR}/files:"
+SRC_URI += "file://init.d/enftun"
+SRC_URI += "file://multitech-example-config.patch"
+
 EXTRA_OECMAKE = "-DCHECK_FORMAT=off -DBUILD_TEST=off -DBUILD_SYSTEMD=off"
 
 inherit cmake
+
+do_install_append() {
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/init.d/enftun ${D}${sysconfdir}/init.d/
+}
+
+FILES_${PN} += "${sysconfdir}/init.d/enftun"

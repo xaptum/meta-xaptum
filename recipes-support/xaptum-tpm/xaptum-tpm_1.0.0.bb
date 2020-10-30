@@ -3,11 +3,12 @@ HOMEPAGE = "https://github.com/xaptum/xaptum-tpm"
 SECTION = "net"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
+DEPENDS = "libtss2"
 
 SRC_URI = "https://github.com/xaptum/${PN}/archive/v${PV}.tar.gz"
-SRC_URI[md5sum] = "7d954d83ebb340f74b5084e4f0ed7aa6"
-SRC_URI[sha256sum] = "701943cd0302592756407323c481ba83e76f62af3f676b947171db1b87974606"
+SRC_URI[md5sum] = "ed923a29703b8f9857876892ade7e6a6"
+SRC_URI[sha256sum] = "20ef10d952f6c3933c7e05c0a0f9f60d32a562fc8ade1884a0ec753a13d21a36"
 
-EXTRA_OECMAKE = ""
+EXTRA_OECMAKE = "-DBUILD_TESTING=off"
 
 inherit cmake

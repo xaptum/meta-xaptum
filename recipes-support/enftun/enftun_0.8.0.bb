@@ -6,14 +6,14 @@ LIC_FILES_CHKSUM = "file://src/enftun.c;beginline=1;endline=15;md5=b33ae22bf8b43
 DEPENDS = "libconfig libuv openssl xtt"
 
 SRC_URI = "https://github.com/xaptum/${PN}/archive/v${PV}.tar.gz"
-SRC_URI[md5sum] = "47f25630992b5f59593dc808756415f9"
-SRC_URI[sha256sum] = "4a85ffa6d13d4ba99b14101bb949921bf8a05cc81ee56269330af78bfaea30ba"
+SRC_URI[md5sum] = "6d2d94109ae2130c296874e9b0359784"
+SRC_URI[sha256sum] = "408f937f913708c2a85a990e943fdcb84543266ec50e7791578acfa0c6b26df1"
 
 FILESEXTRAPATHS_prepend += "${THISDIR}/files:"
 SRC_URI += "file://init.d/enftun"
 SRC_URI += "file://multitech-example-config.patch"
 
-EXTRA_OECMAKE = "-DCHECK_FORMAT=off -DBUILD_TEST=off -DBUILD_SYSTEMD=off"
+EXTRA_OECMAKE = "-DCHECK_FORMAT=off -DBUILD_TEST=off -DBUILD_SYSTEMD=off -DBUILD_KEYGEN=off"
 
 inherit cmake
 
@@ -23,3 +23,5 @@ do_install_append() {
 }
 
 FILES_${PN} += "${sysconfdir}/init.d/enftun"
+
+RDEPENDS_${PN} = "bash"

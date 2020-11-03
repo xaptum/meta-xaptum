@@ -1,0 +1,45 @@
+From ae77d2dfc4ac613fc5861725ff64d01293a5f7fe Mon Sep 17 00:00:00 2001
+From: "David R. Bild" <david.bild@xaptum.com>
+Date: Tue, 3 Nov 2020 13:12:58 -0600
+Subject: [PATCH 1/1] configure: disable ax_valgrind_dflt checks
+
+These are not supported by the version of autoconf in the MLinux 5.1.8
+tree.
+---
+ Makefile.am  | 2 +-
+ configure.ac | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index e2cd531..a79fe1d 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -182,7 +182,7 @@ else # AUTOCONF_CODE_COVERAGE_2019_01_06
+ @CODE_COVERAGE_RULES@
+ endif # AUTOCONF_CODE_COVERAGE_2019_01_06
+ 
+-@VALGRIND_CHECK_RULES@
++# @VALGRIND_CHECK_RULES@
+ VALGRIND_G_DEBUG = fatal-criticals,gc-friendly
+ VALGRIND_memcheck_FLAGS = --leak-check=full --show-leak-kinds=definite,indirect --track-origins=yes --error-exitcode=1
+ 
+diff --git a/configure.ac b/configure.ac
+index fd2a38f..e4c773f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -69,9 +69,9 @@ m4_ifdef([_AX_CODE_COVERAGE_RULES],
+ AX_ADD_AM_MACRO_STATIC([])
+ 
+ # disable helgrind and drd, they hate GAsyncQueue
+-AX_VALGRIND_DFLT([sgcheck], [off])
+-AX_VALGRIND_DFLT([helgrind], [off])
+-AX_VALGRIND_DFLT([drd], [off])
++# AX_VALGRIND_DFLT([sgcheck], [off])
++# AX_VALGRIND_DFLT([helgrind], [off])
++# AX_VALGRIND_DFLT([drd], [off])
+ AX_VALGRIND_CHECK
+ 
+ # allow
+-- 
+2.28.0
+

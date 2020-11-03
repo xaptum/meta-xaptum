@@ -1,0 +1,25 @@
+From 1dacd03cfd848dd569a721fa76bcd2c930d4b1eb Mon Sep 17 00:00:00 2001
+From: "David R. Bild" <david.bild@xaptum.com>
+Date: Tue, 3 Nov 2020 09:48:08 -0600
+Subject: [PATCH 1/1] configure: patch ax_is_release usage
+
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 9af1ed4..fd2a38f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -5,7 +5,7 @@ AC_INIT([tpm2-abrmd],
+         [],
+         [https://github.com/tpm2-software/tpm2-abrmd])
+ AC_CONFIG_MACRO_DIR([m4])
+-AX_IS_RELEASE(dash-version)
++AX_IS_RELEASE([dash-version])
+ AX_CHECK_ENABLE_DEBUG([info])
+ AC_PROG_CC
+ AC_PROG_LN_S
+-- 
+2.28.0
+

@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/xaptum/enftun"
 SECTION = "net"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/enftun.c;beginline=1;endline=15;md5=b33ae22bf8b43882e77c8b2a757a8af8"
-DEPENDS = "libconfig libuv openssl xtt"
+DEPENDS = "libconfig libuv openssl tpm2-tss-engine xaptum-tpm xtt"
 
 SRC_URI = "https://github.com/xaptum/${PN}/archive/v${PV}.tar.gz"
 SRC_URI[md5sum] = "6d2d94109ae2130c296874e9b0359784"

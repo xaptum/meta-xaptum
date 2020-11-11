@@ -1,4 +1,4 @@
-From 34d392f1e8b330b4fc8db815987bf09cf0a36603 Mon Sep 17 00:00:00 2001
+From bade88f6be0b56b2fa04f8eda39bd03059afe1c1 Mon Sep 17 00:00:00 2001
 From: "David R. Bild" <david.bild@xaptum.com>
 Date: Mon, 4 May 2020 16:59:12 -0500
 Subject: [PATCH 1/1] multitech example config
@@ -27,7 +27,7 @@ index 7d65d04..18dc94c 100644
  )
 diff --git a/example/device.conf b/example/device.conf
 deleted file mode 100644
-index c62e8fd..0000000
+index 25467f3..0000000
 --- a/example/device.conf
 +++ /dev/null
 @@ -1,100 +0,0 @@
@@ -71,7 +71,7 @@ index c62e8fd..0000000
 -# Remote server settings
 -remote : {
 -  # List of hostnames, IPv4, or IPv6 addresses of the remote server.
--  # hosts = [ "23.147.128.112", "2607:8f80:ffff::1" ]
+-  # hosts = [ "23.147.128.112" ]
 -
 -  # The listening port on the remote server.
 -  # port = "443"
@@ -135,7 +135,7 @@ diff --git a/example/server.conf b/example/example.conf
 similarity index 86%
 rename from example/server.conf
 rename to example/example.conf
-index e698f34..a5bac2f 100644
+index 988be87..a9d0030 100644
 --- a/example/server.conf
 +++ b/example/example.conf
 @@ -1,13 +1,11 @@
@@ -182,5 +182,5 @@ index e698f34..a5bac2f 100644
 +  }
  }
 -- 
-2.28.0
+2.29.2
 

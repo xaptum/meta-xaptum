@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
 DEPENDS = "libtss2"
 
 SRC_URI = "https://github.com/xaptum/${PN}/archive/v${PV}.tar.gz;downloadfilename=${PN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "ed923a29703b8f9857876892ade7e6a6"
-SRC_URI[sha256sum] = "20ef10d952f6c3933c7e05c0a0f9f60d32a562fc8ade1884a0ec753a13d21a36"
+SRC_URI[md5sum] = "adb6e6ba5b7f321bdb44cd7f6e16ba93"
+SRC_URI[sha256sum] = "6bc58e8a674c9ba57d5da1b282d4a03ffb9b0d30a80164d759330979bad64655"
 
 EXTRA_OECMAKE = "-DBUILD_TESTING=off"
 

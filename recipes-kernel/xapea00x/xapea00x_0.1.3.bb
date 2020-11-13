@@ -16,6 +16,9 @@ SRC_URI = "https://github.com/xaptum/xapea00x/archive/v${PV}.tar.gz"
 SRC_URI[md5sum] = "ea533c7b549ca29546b70e778800df94"
 SRC_URI[sha256sum] = "6c67de24641b3fbef0c7645f1f63b5b7bd052af82ebb2ceea1f8a338b4d4c391"
 
+FILESEXTRAPATHS_prepend += "${THISDIR}/files:"
+SRC_URI += "file://0001-core-ignore-TPM-platform-initialization-error.patch"
+
 S = "${WORKDIR}/${PN}-${PV}"
 
 # This module requires Linux 4.9 or higher.

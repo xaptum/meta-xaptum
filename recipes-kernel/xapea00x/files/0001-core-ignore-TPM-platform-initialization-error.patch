@@ -1,0 +1,28 @@
+From a68d17a7fdbf02d55c9f9a30e07318967bfefa29 Mon Sep 17 00:00:00 2001
+From: "David R. Bild" <david.bild@xaptum.com>
+Date: Fri, 13 Nov 2020 14:28:54 -0600
+Subject: [PATCH 1/1] core: ignore TPM platform initialization error
+
+---
+ xapea00x-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/xapea00x-core.c b/xapea00x-core.c
+index e2d5889..d33d8af 100644
+--- a/xapea00x-core.c
++++ b/xapea00x-core.c
+@@ -110,7 +110,10 @@ static void xapea00x_tpm_probe(struct work_struct *work)
+ 		dev_err(&dev->interface->dev,
+ 			"unable to do TPM platform initialization: %d\n",
+ 			retval);
+-		goto err;
++		// Ignore the error and proceed to register the TPM. The
++		// MultiTech Conduit USB bus bounces several times during
++		// boot, so there's a good chance the TPM was already
++		// initialized anyway.
+ 	}
+ 
+ 	/*
+-- 
+2.29.2
+
